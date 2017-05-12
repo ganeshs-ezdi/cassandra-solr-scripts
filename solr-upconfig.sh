@@ -8,6 +8,9 @@ CONFDIR=/var/solr/data
 CONFIGS="CCPhysician DocumentMaster MacrosSuggester MtDocumentMaster RefDocumentSearchh CNTDocumentMaster NewNPDocumentMaster SpellCheck UserMaster AdtSearch"
 
 for CONFNAME in $CONFIGS; do
-    echo Downloading configuration $CONFNAME from $ZKHOST to $CONFDIR/$CONFNAME/conf
-    $SOLR_COULD_SCRIPT_PATH/zkcli.sh -cmd downconfig -zkhost $ZKHOST -confname $CONFNAME -d $CONFDIR/$CONFNAME/conf
+    echo Uploading configuration $CONFNAME to $ZKHOST from $CONFDIR/$CONFNAME/conf
+    $SOLR_COULD_SCRIPT_PATH/zkcli.sh -cmd upconfig \
+        -zkhost $ZKHOST \
+        -confname $CONFNAME \
+        -confdir $CONFDIR/$CONFNAME/conf
 done

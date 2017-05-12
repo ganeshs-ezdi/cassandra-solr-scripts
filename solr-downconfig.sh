@@ -1,7 +1,7 @@
 #! /bin/bash
 
 SOLR_PATH=/opt/solr
-SOLR_COULD_SCRIPT_PATH=$SOLR_PATH/server/scripts/cloud_scripts
+SOLR_COULD_SCRIPT_PATH=$SOLR_PATH/server/scripts/cloud-scripts
 ZKHOST=$1
 CONFDIR=$2
 

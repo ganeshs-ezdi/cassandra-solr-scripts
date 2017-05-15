@@ -11,13 +11,13 @@ if [[ "$TAR_PATH" == "" ]]; then
 fi
 
 TAR_ABS_PATH=`realpath $TAR_PATH 2>/dev/null`
-TMP_DIR=`mktemp -d`
 
 if [ ! -f "$TAR_ABS_PATH" ]; then
     echo "tar file does not exists"
     exit 0
 fi
 
+TMP_DIR=`mktemp -d`
 pushd $TMP_DIR
 echo Extracting $TAR_ABS_PATH to $TMP_DIR
 tar -xf $TAR_ABS_PATH

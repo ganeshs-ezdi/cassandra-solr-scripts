@@ -7,7 +7,7 @@ if [[ "$CQLSH" == "" ]]; then
     exit 1
 fi
 
-if [[ "$1" == "" ]]
+if [[ "$1" == "" ]]; then
     KEYSPACES=`cqlsh -e 'desc keyspaces' | sed -e 's/  */\n/g' | grep ez`
 else
     KEYSPACES="$*"

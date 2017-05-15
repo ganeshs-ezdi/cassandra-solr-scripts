@@ -7,7 +7,7 @@ if [[ "$CQLSH" == "" ]]; then
     exit 1
 fi
 
-if [[ "$1" == "" ]]
+if [[ "$1" == "" ]]; then
     KEYSPACES=`cqlsh -e 'desc keyspaces' | sed -e 's/  */\n/g' | grep ez`
 else
     KEYSPACES="$*"
@@ -19,7 +19,8 @@ OLD_DIR=$PWD
 
 for KEYSPACE in $KEYSPACES; do
     TABLES=`cqlsh -e "USE $KEYSPACE; DESC TABLES;" | sed -e 's/  */\n/g'`
-    mkdir -p $TMP_DIR/$KEYSPACES
+    echo Creating directory $TMP_DIR/$KEYSPACE
+    mkdir -p $TMP_DIR/$KEYSPACE
     for TABLE in $TABLES; do
         COMMAND="USE $KEYSPACE; COPY $TABLE TO '$TMP_DIR/$KEYSPACE/$TABLE.csv'"
         cqlsh -e "$COMMAND"

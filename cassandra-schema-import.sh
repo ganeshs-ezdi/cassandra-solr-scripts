@@ -42,6 +42,8 @@ for CQL_SCRIPT in $CQL_SCRIPTS; do
     fi
 done
 
+popd
+
 rm -r $TMP_DIR
 
 

@@ -10,6 +10,12 @@ if [[ "$TAR_PATH" == "" ]]; then
     exit 0
 fi
 
+REALPATH=`which realpath`
+if [[ "$REALPATH" == "" ]]; then
+    echo "realpath does not exists please install 'realpath'"
+    exit 0
+fi
+
 TAR_ABS_PATH=`realpath $TAR_PATH 2>/dev/null`
 
 if [ ! -f "$TAR_ABS_PATH" ]; then
@@ -29,7 +35,10 @@ for CQL_SCRIPT in $CQL_SCRIPTS; do
     KEYSPACE=`basename -s.cql $CQL_SCRIPT`
     KEYSPACE_IN_CASSANDRA=`echo $KEYSPACES | grep $KEYSPACE`
     if [[ "$KEYSPACE_IN_CASSANDRA" == "" ]]; then
-        echo Can update keyspace $KEYSPACE
+        echo Adding keyspace $KEYSPACE
+        cqlsh --debug -f $CQL_SCRIPT
+    else
+        echo $KEYSPACE already exists - CANNOT IMPORT
     fi
 done
 

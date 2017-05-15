@@ -49,7 +49,7 @@ for KEYSPACE_DIR in $KEYSPACES_DIRS; do
 
     for TABLE_CSV in $TABLES_CSV; do
         TABLE=`basename -s.csv $TABLE_CSV`
-        
+
         echo Checking if $TABLE contains data
         TABLE_HAS_RECORDS=`cqlsh -e "select * from $KEYSPACE.$TABLE limit 1" | tail -n 1 | grep '(0 rows)'`
         # if it has records the TABLE_HAS_RECORDS is NULL STRING
@@ -66,7 +66,7 @@ for KEYSPACE_DIR in $KEYSPACES_DIRS; do
         echo_right "No tables has records" "[    Updating ... $KEYSPACE    ]"
         for TABLE_CSV in $TABLES_CSV; do
             TABLE=`basename -s.csv $TABLE_CSV`
-            echo "COPY $KEYSPACE.$TABLE FROM '$TABLE_CSV'"
+            cqlsh -e "COPY $KEYSPACE.$TABLE FROM '$TABLE_CSV'"
         done
     else
         echo Not updating keyspace since $TABLE_WHICH_HAS_DATA has data

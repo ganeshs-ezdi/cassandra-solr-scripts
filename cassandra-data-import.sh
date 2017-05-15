@@ -38,11 +38,13 @@ for KEYSPACE_DIR in $KEYSPACES_DIRS; do
     for TABLE_CSV in $TABLES_CSV; do
         TABLE=`basename -s.csv $TABLE_CSV`
         echo Checking if $TABLE contains data
-        TABLE_HAS_RECORDS=`cqlsh -e 'select * from $KEYSPACE.$TABLE limit 1' | tail -n 1 | grep '(0 rows)'`
+        TABLE_HAS_RECORDS=`cqlsh -e "select * from $KEYSPACE.$TABLE limit 1" | tail -n 1 | grep '(0 rows)'`
         # if it has records the TABLE_HAS_RECORDS is NULL STRING
         if [[ "$TABLE_HAS_RECORDS" == "" ]]; then
             CAN_UPDATE_KEYSPACE="NO"
             TABLE_WHICH_HAS_DATA=$TABLE
+        else
+            echo $TABLE does not contains any data == $TABLE_HAS_RECORDS ==
         fi
     done
 

@@ -6,9 +6,9 @@ function echo_right()
 {
     MSG=$1
     RIGHT=$2
-    LEN=`echo $MSG $RIGHT | wc -c`
+    LEN=`echo $MSG | wc -c`
     COLS=`tput cols`
-    printf '%s%*s%s' $MSG `expr $COLS-$LEN` $RIGHT
+    printf '%s%*s%s' "$MSG" `expr $COLS - $LEN + 1` "$RIGHT"
 }
 
 TAR_PATH=$1

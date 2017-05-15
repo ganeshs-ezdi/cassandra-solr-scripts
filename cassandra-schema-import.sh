@@ -22,10 +22,15 @@ pushd $TMP_DIR
 echo Extracting $TAR_ABS_PATH to $TMP_DIR
 tar -xf $TAR_ABS_PATH
 
-CQL_SCRIPTS=`find $TMP_DIR -name *.cql`
+CQL_SCRIPTS=`find $TMP_DIR -name '*.cql'`
+KEYSPACES=`cqlsh -e 'desc keyspaces;'`
 
 for CQL_SCRIPT in $CQL_SCRIPTS; do
-    echo $CQL_SCRIPT
+    KEYSPACE=`basename -s.cql $CQL_SCRIPT`
+    KEYSPACE_IN_CASSANDRA=`echo $KEYSPACES | grep $KEYSPACE`
+    if [[ "$KEYSPACE_IN_CASSANDRA" == "" ]]; then
+        echo Can update keyspace $KEYSPACE
+    fi
 done
 
 rm -r $TMP_DIR

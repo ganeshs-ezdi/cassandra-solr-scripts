@@ -43,6 +43,7 @@ for KEYSPACE_DIR in $KEYSPACES_DIRS; do
         if [[ "$TABLE_HAS_RECORDS" == "" ]]; then
             CAN_UPDATE_KEYSPACE="NO"
             TABLE_WHICH_HAS_DATA=$TABLE
+            break
         else
             echo $TABLE does not contains any data == $TABLE_HAS_RECORDS ==
         fi

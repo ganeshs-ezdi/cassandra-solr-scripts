@@ -2,6 +2,15 @@
 
 # if there is already data into the system stop and give a warning
 
+function echo_right()
+{
+    MSG=$1
+    RIGHT=$2
+    LEN=`echo $MSG $RIGHT | wc -c`
+    COLS=`tput cols`
+    printf '%s%*s%s' $MSG `expr $COLS-$LEN` $RIGHT
+}
+
 TAR_PATH=$1
 
 if [[ "$TAR_PATH" == "" ]]; then
@@ -50,7 +59,7 @@ for KEYSPACE_DIR in $KEYSPACES_DIRS; do
     done
 
     if [[ "$CAN_UPDATE_KEYSPACE" == "YES" ]]; then
-        echo Can update $KEYSPACE
+        echo_right "Can update keyspace" "$KEYSPACE"
     else
         echo Not updating keyspace since $TABLE_WHICH_HAS_DATA has data
     fi

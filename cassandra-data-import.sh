@@ -31,7 +31,26 @@ KEYSPACES_DIRS=`find $TMP_DIR -mindepth 1 -maxdepth 1 -type d`
 
 for KEYSPACE_DIR in $KEYSPACES_DIRS; do
     KEYSPACE=`basename $KEYSPACE_DIR`
-    echo Found keyspace $KEYSPACE
+    TABLES_CSV=`find $TMP_DIR/$KEYSPACE -name '*.csv'`
+    echo Checking if we can update $KEYSPACE
+    CAN_UPDATE_KEYSPACE="YES"
+    TABLE_WHICH_HAS_DATA=""
+    for TABLE_CSV in $TABLES_CSV; do
+        TABLE=`basename -s.csv $TABLE_CSV`
+        echo Checking if $TABLE contains data
+        TABLE_HAS_RECORDS=`cqlsh -e 'select * from $KEYSPACE.$TABLE limit 1' | tail -n 1 | grep '(0 rows)'`
+        # if it has records the TABLE_HAS_RECORDS is NULL STRING
+        if [[ "$TABLE_HAS_RECORDS" == "" ]]; then
+            CAN_UPDATE_KEYSPACE="NO"
+            TABLE_WHICH_HAS_DATA=$TABLE
+        fi
+    done
+
+    if [[ "$CAN_UPDATE_KEYSPACE" == "YES" ]]; then
+        echo Can update $KEYSPACE
+    else
+        echo Not updating keyspace since $TABLE_WHICH_HAS_DATA has data
+    fi
 done
 
 popd

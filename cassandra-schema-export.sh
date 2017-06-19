@@ -6,9 +6,9 @@ if [[ "$CQLSH" == "" ]]; then
     echo "cqlsh does not exits"
     exit 1
 fi
-
+CQLSH_CMD="cqlsh -ucassandra -pcassandra 10.120.6.111 9032"
 if [[ "$1" == "" ]]; then
-    KEYSPACES=`cqlsh -e 'desc keyspaces' | sed -e 's/  */\n/g' | grep ez`
+    KEYSPACES=`$CQLSH_CMD -e 'desc keyspaces' | sed -e 's/  */\n/g' | grep ez`
 else
     KEYSPACES="$*"
 fi
@@ -16,7 +16,7 @@ fi
 TMP_DIR=`mktemp -d`
 
 for KEYSPACE in $KEYSPACES; do
-    cqlsh -e "DESC KEYSPACE $KEYSPACE" > $TMP_DIR/$KEYSPACE.cql
+    $CQLSH_CMD -e "DESC KEYSPACE $KEYSPACE" > $TMP_DIR/$KEYSPACE.cql
 done
 
 TIMESTAMP=$(date +"%Y%m%d-%H%M%S")

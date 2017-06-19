@@ -7,8 +7,10 @@ if [[ "$CQLSH" == "" ]]; then
     exit 1
 fi
 
+CQLSH_CMD="cqlsh -ucassandra -pcassandra 10.120.6.111 9032"
+
 if [[ "$1" == "" ]]; then
-    KEYSPACES=`cqlsh -e 'desc keyspaces' | sed -e 's/  */\n/g' | grep ez`
+    KEYSPACES=`$CQLSH_CMD -e 'desc keyspaces' | sed -e 's/  */\n/g' | grep ez`
 else
     KEYSPACES="$*"
 fi
@@ -18,12 +20,12 @@ TIMESTAMP=$(date +"%Y%m%d-%H%M%S")
 OLD_DIR=$PWD
 
 for KEYSPACE in $KEYSPACES; do
-    TABLES=`cqlsh -e "USE $KEYSPACE; DESC TABLES;" | sed -e 's/  */\n/g'`
+    TABLES=`$CQLSH_CMD -e "USE $KEYSPACE; DESC TABLES;" | sed -e 's/  */\n/g'`
     echo Creating directory $TMP_DIR/$KEYSPACE
     mkdir -p $TMP_DIR/$KEYSPACE
     for TABLE in $TABLES; do
-        COMMAND="USE $KEYSPACE; COPY $TABLE TO '$TMP_DIR/$KEYSPACE/$TABLE.csv'"
-        cqlsh -e "$COMMAND"
+        COMMAND="USE $KEYSPACE; COPY $TABLE TO '$TMP_DIR/$KEYSPACE/$TABLE.csv' WITH NULL='null'"
+        $CQLSH_CMD -e "$COMMAND"
     done
 done
 

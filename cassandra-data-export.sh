@@ -7,7 +7,7 @@ if [[ "$CQLSH" == "" ]]; then
     exit 1
 fi
 
-CQLSH_CMD="cqlsh -ucassandra -pcassandra 10.120.6.111 9032"
+CQLSH_CMD="cqlsh -ucassandra -pcassandra"
 
 if [[ "$1" == "" ]]; then
     KEYSPACES=`$CQLSH_CMD -e 'desc keyspaces' | sed -e 's/  */\n/g' | grep ez`

@@ -9,5 +9,5 @@ CONFIGS="CCPhysician DocumentMaster MacrosSuggester MtDocumentMaster RefDocument
 
 for CONFNAME in $CONFIGS; do
     echo Downloading configuration $CONFNAME from $ZKHOST to $CONFDIR/$CONFNAME/conf
-    $SOLR_COULD_SCRIPT_PATH/zkcli.sh -cmd downconfig -zkhost $ZKHOST -confname $CONFNAME -d $CONFDIR/$CONFNAME/conf
+    $SOLR_COULD_SCRIPT_PATH/zkcli.sh -cmd downconfig -zkhost $ZKHOST -confname $CONFNAME -d $CONFDIR/$CONFNAME/
 done
